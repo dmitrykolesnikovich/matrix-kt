@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
@@ -18,7 +18,7 @@ public class SetAccountData(
      */
     public override val body: JsonObject
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SetAccountData.Url, JsonObject, Unit> {
-    @Resource("/_matrix/client/r0/user/{userId}/account_data/{type}")
+    @Resource("_matrix/client/r0/user/{userId}/account_data/{type}")
     @Serializable
     public class Url(
         /**

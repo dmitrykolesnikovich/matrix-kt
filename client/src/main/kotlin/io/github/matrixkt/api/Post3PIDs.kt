@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,9 +22,9 @@ import kotlinx.serialization.Serializable
 @Deprecated("This endpoint has been deprecated.")
 public class Post3PIDs(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, Post3PIDs.Url, Post3PIDs.Body?, Post3PIDs.Response> {
-    @Resource("/_matrix/client/r0/account/3pid")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, Post3PIDs.Url, Post3PIDs.Body, Post3PIDs.Response> {
+    @Resource("_matrix/client/r0/account/3pid")
     @Serializable
     public class Url
 

@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.Medium
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,10 +17,10 @@ import kotlinx.serialization.Serializable
  */
 public class Delete3pidFromAccount(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, Delete3pidFromAccount.Url, Delete3pidFromAccount.Body?,
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, Delete3pidFromAccount.Url, Delete3pidFromAccount.Body,
         Delete3pidFromAccount.Response> {
-    @Resource("/_matrix/client/r0/account/3pid/delete")
+    @Resource("_matrix/client/r0/account/3pid/delete")
     @Serializable
     public class Url
 
@@ -49,7 +49,7 @@ public class Delete3pidFromAccount(
         /**
          * An indicator as to whether or not the homeserver was able to unbind
          * the 3PID from the identity server. ``success`` indicates that the
-         * indentity server has unbound the identifier whereas ``no-support``
+         * identity server has unbound the identifier whereas ``no-support``
          * indicates that the identity server refuses to support the request
          * or the homeserver was not able to determine an identity server to
          * unbind from.

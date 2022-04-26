@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.RoomVisibility
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -21,7 +21,7 @@ public class SetRoomVisibilityOnDirectory(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SetRoomVisibilityOnDirectory.Url, SetRoomVisibilityOnDirectory.Body, Unit> {
-    @Resource("/_matrix/client/r0/directory/list/room/{roomId}")
+    @Resource("_matrix/client/r0/directory/list/room/{roomId}")
     @Serializable
     public class Url(
         /**

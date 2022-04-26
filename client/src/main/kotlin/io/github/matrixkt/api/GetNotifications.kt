@@ -1,9 +1,9 @@
 package io.github.matrixkt.api
 
-import io.github.matrixkt.models.events.MatrixEvent
+import io.github.matrixkt.models.events.SyncEvent
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -14,11 +14,11 @@ import kotlinx.serialization.json.JsonElement
  */
 public class GetNotifications(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetNotifications.Url, Any?, GetNotifications.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetNotifications.Url, Nothing, GetNotifications.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/notifications")
+    @Resource("_matrix/client/r0/notifications")
     @Serializable
     public class Url(
         /**
@@ -47,7 +47,7 @@ public class GetNotifications(
         /**
          * The Event object for the event that triggered the notification.
          */
-        public val event: MatrixEvent,
+        public val event: SyncEvent,
         /**
          * The profile tag of the rule that matched this event.
          */

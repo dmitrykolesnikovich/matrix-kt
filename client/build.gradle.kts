@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -35,8 +37,9 @@ kotlin {
                 api("io.ktor:ktor-client-core:$ktorVersion")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-                implementation("io.ktor:ktor-client-json:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-resources:$ktorVersion")
             }
         }
         commonTest {
@@ -46,9 +49,15 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
 
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
                 implementation("io.ktor:ktor-client-mock:$ktorVersion")
-                implementation(project(":testutils"))
             }
+        }
+    }
+
+    targets.withType<KotlinNativeTarget> {
+        binaries.all {
+            binaryOptions["memoryModel"] = "experimental"
         }
     }
 }

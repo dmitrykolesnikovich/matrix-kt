@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,11 +14,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetUserProfile(
     public override val url: Url
-) : MatrixRpc<RpcMethod.Get, GetUserProfile.Url, Any?, GetUserProfile.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc<RpcMethod.Get, GetUserProfile.Url, Nothing, GetUserProfile.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/profile/{userId}")
+    @Resource("_matrix/client/r0/profile/{userId}")
     @Serializable
     public class Url(
         /**

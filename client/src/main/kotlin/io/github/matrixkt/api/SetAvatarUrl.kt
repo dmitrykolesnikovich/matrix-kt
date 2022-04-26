@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,7 +17,7 @@ public class SetAvatarUrl(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SetAvatarUrl.Url, SetAvatarUrl.Body, Unit> {
-    @Resource("/_matrix/client/r0/profile/{userId}/avatar_url")
+    @Resource("_matrix/client/r0/profile/{userId}/avatar_url")
     @Serializable
     public class Url(
         /**

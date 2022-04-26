@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.thirdparty.User
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class QueryUserByID(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, QueryUserByID.Url, Any?, List<User>> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, QueryUserByID.Url, Nothing, List<User>> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/thirdparty/user")
+    @Resource("_matrix/client/r0/thirdparty/user")
     @Serializable
     public class Url(
         /**

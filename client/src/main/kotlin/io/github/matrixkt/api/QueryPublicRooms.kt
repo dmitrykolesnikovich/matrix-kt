@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.PublicRoomsChunk
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,7 +20,7 @@ public class QueryPublicRooms(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Post, QueryPublicRooms.Url, QueryPublicRooms.Body, QueryPublicRooms.Response> {
-    @Resource("/_matrix/client/r0/publicRooms")
+    @Resource("_matrix/client/r0/publicRooms")
     @Serializable
     public class Url(
         /**

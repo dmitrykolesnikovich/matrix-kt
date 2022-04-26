@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.filter.Filter
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,7 +19,7 @@ public class DefineFilter(
      */
     public override val body: Filter
 ) : MatrixRpc.WithAuth<RpcMethod.Post, DefineFilter.Url, Filter, DefineFilter.Response> {
-    @Resource("/_matrix/client/r0/user/{userId}/filter")
+    @Resource("_matrix/client/r0/user/{userId}/filter")
     @Serializable
     public class Url(
         /**

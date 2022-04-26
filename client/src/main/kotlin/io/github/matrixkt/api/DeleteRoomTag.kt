@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -10,11 +10,11 @@ import kotlinx.serialization.Serializable
  */
 public class DeleteRoomTag(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Delete, DeleteRoomTag.Url, Any?, Unit> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Delete, DeleteRoomTag.Url, Nothing, Unit> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags/{tag}")
+    @Resource("_matrix/client/r0/user/{userId}/rooms/{roomId}/tags/{tag}")
     @Serializable
     public class Url(
         /**

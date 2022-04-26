@@ -4,7 +4,7 @@ import io.github.matrixkt.models.search.Categories
 import io.github.matrixkt.models.search.Results
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,9 +13,9 @@ import kotlinx.serialization.Serializable
  */
 public class Search(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, Search.Url, Search.Body?, Results> {
-    @Resource("/_matrix/client/r0/search")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, Search.Url, Search.Body, Results> {
+    @Resource("_matrix/client/r0/search")
     @Serializable
     public class Url(
         /**

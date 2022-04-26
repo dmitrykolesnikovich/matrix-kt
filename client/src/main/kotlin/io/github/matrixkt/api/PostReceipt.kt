@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
@@ -16,9 +16,9 @@ public class PostReceipt(
      * Extra receipt information to attach to ``content`` if any. The
      * server will automatically set the ``ts`` field.
      */
-    public override val body: JsonObject? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, PostReceipt.Url, JsonObject?, Unit> {
-    @Resource("/_matrix/client/r0/rooms/{roomId}/receipt/{receiptType}/{eventId}")
+    public override val body: JsonObject
+) : MatrixRpc.WithAuth<RpcMethod.Post, PostReceipt.Url, JsonObject, Unit> {
+    @Resource("_matrix/client/r0/rooms/{roomId}/receipt/{receiptType}/{eventId}")
     @Serializable
     public class Url(
         /**

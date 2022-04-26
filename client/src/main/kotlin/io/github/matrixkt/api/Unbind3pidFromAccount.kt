@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.Medium
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,10 +17,10 @@ import kotlinx.serialization.Serializable
  */
 public class Unbind3pidFromAccount(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, Unbind3pidFromAccount.Url, Unbind3pidFromAccount.Body?,
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, Unbind3pidFromAccount.Url, Unbind3pidFromAccount.Body,
         Unbind3pidFromAccount.Response> {
-    @Resource("/_matrix/client/r0/account/3pid/unbind")
+    @Resource("_matrix/client/r0/account/3pid/unbind")
     @Serializable
     public class Url
 

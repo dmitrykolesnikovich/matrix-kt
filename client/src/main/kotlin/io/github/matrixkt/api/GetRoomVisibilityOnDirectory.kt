@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.RoomVisibility
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetRoomVisibilityOnDirectory(
     public override val url: Url
-) : MatrixRpc<RpcMethod.Get, GetRoomVisibilityOnDirectory.Url, Any?, GetRoomVisibilityOnDirectory.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc<RpcMethod.Get, GetRoomVisibilityOnDirectory.Url, Nothing, GetRoomVisibilityOnDirectory.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/directory/list/room/{roomId}")
+    @Resource("_matrix/client/r0/directory/list/room/{roomId}")
     @Serializable
     public class Url(
         /**

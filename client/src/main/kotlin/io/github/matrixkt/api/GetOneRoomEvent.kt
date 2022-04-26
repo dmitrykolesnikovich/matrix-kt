@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.events.MatrixEvent
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,11 +12,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetOneRoomEvent(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetOneRoomEvent.Url, Any?, MatrixEvent> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetOneRoomEvent.Url, Nothing, MatrixEvent> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/rooms/{roomId}/event/{eventId}")
+    @Resource("_matrix/client/r0/rooms/{roomId}/event/{eventId}")
     @Serializable
     public class Url(
         /**

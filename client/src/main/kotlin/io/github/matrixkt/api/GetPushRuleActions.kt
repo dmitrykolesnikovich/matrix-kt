@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.push.PushRuleKind
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetPushRuleActions(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetPushRuleActions.Url, Any?, GetPushRuleActions.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetPushRuleActions.Url, Nothing, GetPushRuleActions.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/pushrules/{scope}/{kind}/{ruleId}/actions")
+    @Resource("_matrix/client/r0/pushrules/{scope}/{kind}/{ruleId}/actions")
     @Serializable
     public class Url(
         /**

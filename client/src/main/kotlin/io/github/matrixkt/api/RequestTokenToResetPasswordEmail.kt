@@ -4,7 +4,7 @@ import io.github.matrixkt.models.EmailValidationRequest
 import io.github.matrixkt.models.TokenValidationResponse
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -32,7 +32,7 @@ public class RequestTokenToResetPasswordEmail(
     public override val url: Url,
     public override val body: EmailValidationRequest
 ) : MatrixRpc<RpcMethod.Post, RequestTokenToResetPasswordEmail.Url, EmailValidationRequest, TokenValidationResponse> {
-    @Resource("/_matrix/client/r0/account/password/email/requestToken")
+    @Resource("_matrix/client/r0/account/password/email/requestToken")
     @Serializable
     public class Url
 }

@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.events.contents.TagContent
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetRoomTags(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetRoomTags.Url, Any?, TagContent> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetRoomTags.Url, Nothing, TagContent> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags")
+    @Resource("_matrix/client/r0/user/{userId}/rooms/{roomId}/tags")
     @Serializable
     public class Url(
         /**

@@ -4,7 +4,7 @@ import io.github.matrixkt.models.Presence
 import io.github.matrixkt.models.sync.SyncResponse
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,11 +30,11 @@ import kotlinx.serialization.Serializable
  */
 public class Sync(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, Sync.Url, Any?, SyncResponse> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, Sync.Url, Nothing, SyncResponse> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/sync")
+    @Resource("_matrix/client/r0/sync")
     @Serializable
     public class Url(
         /**

@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -18,11 +18,11 @@ import kotlinx.serialization.Serializable
  */
 public class ForgetRoom(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Post, ForgetRoom.Url, Any?, Unit> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Post, ForgetRoom.Url, Nothing, Unit> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/rooms/{roomId}/forget")
+    @Resource("_matrix/client/r0/rooms/{roomId}/forget")
     @Serializable
     public class Url(
         /**

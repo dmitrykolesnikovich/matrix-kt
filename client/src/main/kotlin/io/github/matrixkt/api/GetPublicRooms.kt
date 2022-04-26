@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.PublicRoomsChunk
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,11 +15,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetPublicRooms(
     public override val url: Url
-) : MatrixRpc<RpcMethod.Get, GetPublicRooms.Url, Any?, GetPublicRooms.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc<RpcMethod.Get, GetPublicRooms.Url, Nothing, GetPublicRooms.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/publicRooms")
+    @Resource("_matrix/client/r0/publicRooms")
     @Serializable
     public class Url(
         /**

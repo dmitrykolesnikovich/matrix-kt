@@ -1,85 +1,91 @@
 package io.github.matrixkt.utils
 
 import io.github.matrixkt.models.MatrixException
-import io.github.matrixkt.utils.resource.href
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.resources.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import kotlin.jvm.JvmName
 
-public suspend inline fun <reified Method : RpcMethod, reified Location, RequestBody : Any?, reified ResponseBody> HttpClient.rpc(
-    rpcObject: MatrixRpc<Method, Location, RequestBody, ResponseBody>,
+@PublishedApi
+internal suspend inline fun <reified Method : RpcMethod, reified Location : Any, reified ResponseBody> HttpClient.baseRpc(
+    location: Location,
     block: HttpRequestBuilder.() -> Unit = {}
 ): ResponseBody {
-    try {
-        return request {
-            method = RpcMethod.fromType<Method>()
-            href(rpcObject.url, url)
+    val response = request(location) {
+        method = RpcMethod.fromType<Method>()
 
-            val rpcBody = rpcObject.body
-            if (rpcBody != null) {
-                contentType(ContentType.Application.Json)
-                body = rpcBody
-            }
+        block()
 
-            block()
-
-            // This is done after `block()` because users cannot be trusted.
-            // It needs to be true for the `try`/`catch` to work as expected.
-            // If you want to this to be false, copy this method and do your own thing.
-            expectSuccess = true
-        }
-    } catch (e: ResponseException) {
-        throw MatrixException(e.response.receive())
+        // This is done after `block()` because users cannot be trusted.
+        // If you want to this to be different, copy this method and do your own thing.
+        expectSuccess = false
+    }
+    if (response.status.isSuccess()) {
+        return response.body()
+    } else {
+        throw MatrixException(response.body())
     }
 }
 
-public suspend inline fun <reified Method : RpcMethod, reified Location, RequestBody : Any?, reified ResponseBody> HttpClient.rpc(
+public suspend inline fun <reified Method : RpcMethod, reified Location : Any, reified RequestBody : Any, reified ResponseBody> HttpClient.rpc(
+    rpcObject: MatrixRpc<Method, Location, RequestBody, ResponseBody>,
+    block: HttpRequestBuilder.() -> Unit = {}
+): ResponseBody {
+    return baseRpc<Method, Location, ResponseBody>(rpcObject.url) {
+        contentType(ContentType.Application.Json)
+        setBody(rpcObject.body)
+        block()
+    }
+}
+
+@JvmName("rpcWithoutRequestBody")
+public suspend inline fun <reified Method : RpcMethod, reified Location : Any, reified ResponseBody> HttpClient.rpc(
+    rpcObject: MatrixRpc<Method, Location, Nothing, ResponseBody>,
+    block: HttpRequestBuilder.() -> Unit = {}
+): ResponseBody {
+    return baseRpc<Method, Location, ResponseBody>(rpcObject.url, block)
+}
+
+public suspend inline fun <reified Method : RpcMethod, reified Location : Any, reified RequestBody : Any, reified ResponseBody> HttpClient.rpc(
     rpcObject: MatrixRpc.WithAuth<Method, Location, RequestBody, ResponseBody>,
     accessToken: String,
     block: HttpRequestBuilder.() -> Unit = {}
 ): ResponseBody {
-    try {
-        return request {
-            method = RpcMethod.fromType<Method>()
-            href(rpcObject.url, url)
+    return baseRpc<Method, Location, ResponseBody>(rpcObject.url) {
+        bearerAuth(accessToken)
+        contentType(ContentType.Application.Json)
+        setBody(rpcObject.body)
+        block()
+    }
+}
 
-            header(HttpHeaders.Authorization, "Bearer $accessToken")
-
-            val rpcBody = rpcObject.body
-            if (rpcBody != null) {
-                contentType(ContentType.Application.Json)
-                body = rpcBody
-            }
-
-            block()
-
-            // This is done after `block()` because users cannot be trusted.
-            // It needs to be true for the `try`/`catch` to work as expected.
-            // If you want to this to be false, copy this method and do your own thing.
-            expectSuccess = true
-        }
-    } catch (e: ResponseException) {
-        throw MatrixException(e.response.receive())
+@JvmName("rpcWithoutRequestBody")
+public suspend inline fun <reified Method : RpcMethod, reified Location : Any, reified ResponseBody> HttpClient.rpc(
+    rpcObject: MatrixRpc.WithAuth<Method, Location, Nothing, ResponseBody>,
+    accessToken: String,
+    block: HttpRequestBuilder.() -> Unit = {}
+): ResponseBody {
+    return baseRpc<Method, Location, ResponseBody>(rpcObject.url) {
+        bearerAuth(accessToken)
+        block()
     }
 }
 
 @Suppress("FunctionName")
-public fun HttpClientConfig<*>.MatrixConfig(baseUrl: Url, json: Json = MatrixJson) {
+public fun HttpClientConfig<*>.MatrixConfig(baseUrl: String, json: Json = MatrixJson) {
     defaultRequest {
-        val builder = URLBuilder(baseUrl)
-        if (url.encodedPath.startsWith('/')) {
-            builder.encodedPath = builder.encodedPath.removeSuffix("/")
-        }
-        builder.encodedPath += url.encodedPath
-        url.takeFrom(builder)
+        url(baseUrl.removeSuffix("/") + "/")
     }
 
-    Json {
-        serializer = KotlinxSerializer(json)
+    install(ContentNegotiation) {
+        json(json)
     }
+
+    install(Resources)
 }

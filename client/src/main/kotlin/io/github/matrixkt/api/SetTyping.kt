@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -18,7 +18,7 @@ public class SetTyping(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SetTyping.Url, SetTyping.Body, Unit> {
-    @Resource("/_matrix/client/r0/rooms/{roomId}/typing/{userId}")
+    @Resource("_matrix/client/r0/rooms/{roomId}/typing/{userId}")
     @Serializable
     public class Url(
         /**

@@ -1,15 +1,14 @@
 package io.github.matrixkt.models
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonClassDiscriminator
 
+@OptIn(ExperimentalSerializationApi::class)
+@JsonClassDiscriminator("type")
 @Serializable
 public abstract class AuthenticationData {
-    // /**
-    //  * The login type that the client is attempting to complete.
-    //  */
-    // abstract val type: String
-
     /**
      * The value of the session key given by the homeserver.
      */
@@ -21,9 +20,6 @@ public abstract class AuthenticationData {
     @Serializable
     @SerialName("m.login.password")
     public data class Password(
-        /**
-         * The value of the session key given by the homeserver.
-         */
         override val session: String? = null,
 
         val identifier: UserIdentifier,
@@ -36,9 +32,6 @@ public abstract class AuthenticationData {
     @Serializable
     @SerialName("m.login.recaptcha")
     public data class GoogleRecaptcha(
-        /**
-         * The value of the session key given by the homeserver.
-         */
         override val session: String? = null,
 
         val response: String
@@ -50,9 +43,6 @@ public abstract class AuthenticationData {
     @Serializable
     @SerialName("m.login.token")
     public data class Token(
-        /**
-         * The value of the session key given by the homeserver.
-         */
         override val session: String? = null,
 
         val token: String,
@@ -70,9 +60,6 @@ public abstract class AuthenticationData {
     @Serializable
     @SerialName("m.login.email.identity")
     public data class Email(
-        /**
-         * The value of the session key given by the homeserver.
-         */
         override val session: String? = null,
 
         @SerialName("threepidCreds")
@@ -106,9 +93,6 @@ public abstract class AuthenticationData {
     @Serializable
     @SerialName("m.login.dummy")
     public data class Dummy(
-        /**
-         * The value of the session key given by the homeserver.
-         */
         override val session: String? = null
     ) : AuthenticationData()
 }

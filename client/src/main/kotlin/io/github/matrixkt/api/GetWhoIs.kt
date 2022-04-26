@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,11 +15,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetWhoIs(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetWhoIs.Url, Any?, GetWhoIs.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetWhoIs.Url, Nothing, GetWhoIs.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/admin/whois/{userId}")
+    @Resource("_matrix/client/r0/admin/whois/{userId}")
     @Serializable
     public class Url(
         /**

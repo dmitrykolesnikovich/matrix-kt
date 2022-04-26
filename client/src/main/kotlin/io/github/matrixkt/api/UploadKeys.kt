@@ -4,10 +4,9 @@ import io.github.matrixkt.models.DeviceKeys
 import io.github.matrixkt.models.OneTimeKeySerializer
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
 
 /**
  * Publishes end-to-end encryption keys for the device.
@@ -17,9 +16,9 @@ public class UploadKeys(
     /**
      * The keys to be published
      */
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, UploadKeys.Url, UploadKeys.Body?, UploadKeys.Response> {
-    @Resource("/_matrix/client/r0/keys/upload")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, UploadKeys.Url, UploadKeys.Body, UploadKeys.Response> {
+    @Resource("_matrix/client/r0/keys/upload")
     @Serializable
     public class Url
 

@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.Device
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetDevice(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetDevice.Url, Any?, Device> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetDevice.Url, Nothing, Device> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/devices/{deviceId}")
+    @Resource("_matrix/client/r0/devices/{deviceId}")
     @Serializable
     public class Url(
         /**

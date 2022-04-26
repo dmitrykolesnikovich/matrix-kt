@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.AuthenticationData
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -13,9 +13,9 @@ import kotlinx.serialization.Serializable
  */
 public class DeleteDevices(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, DeleteDevices.Url, DeleteDevices.Body?, Unit> {
-    @Resource("/_matrix/client/r0/delete_devices")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, DeleteDevices.Url, DeleteDevices.Body, Unit> {
+    @Resource("_matrix/client/r0/delete_devices")
     @Serializable
     public class Url
 

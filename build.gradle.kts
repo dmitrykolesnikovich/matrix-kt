@@ -3,15 +3,15 @@ import org.jetbrains.kotlin.konan.target.HostManager
 import java.io.ByteArrayOutputStream
 
 plugins {
-    kotlin("multiplatform") version "1.5.20" apply false
-    kotlin("plugin.serialization") version "1.5.20" apply false
-    id("de.undercouch.download") version "4.0.4" apply false
+    kotlin("multiplatform") version "1.6.20" apply false
+    kotlin("plugin.serialization") version "1.6.20" apply false
+    id("de.undercouch.download") version "4.1.2" apply false
 }
 
-val ktorVersion: String by extra("1.6.1")
-val serialVersion: String by extra("1.2.2")
-val coroutineVersion: String by extra("1.5.1-native-mt")
-val jnaVersion: String by extra("5.8.0")
+val ktorVersion: String by extra("2.0.0")
+val serialVersion: String by extra("1.3.1")
+val coroutineVersion: String by extra("1.6.1")
+val jnaVersion: String by extra("5.9.0")
 
 val stdout = ByteArrayOutputStream()
 exec {
@@ -20,6 +20,10 @@ exec {
 }
 
 version = stdout.toString().trim()
+
+repositories {
+    mavenCentral()
+}
 
 subprojects {
     repositories {
@@ -33,7 +37,7 @@ subprojects {
         configure<KotlinMultiplatformExtension> {
             sourceSets.all {
                 languageSettings.apply {
-                    useExperimentalAnnotation("kotlin.RequiresOptIn")
+                    optIn("kotlin.RequiresOptIn")
                 }
             }
         }

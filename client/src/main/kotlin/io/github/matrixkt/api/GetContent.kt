@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetContent(
     public override val url: Url
-) : MatrixRpc<RpcMethod.Get, GetContent.Url, Any?, ByteArray> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc<RpcMethod.Get, GetContent.Url, Nothing, ByteArray> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/media/r0/download/{serverName}/{mediaId}")
+    @Resource("_matrix/media/r0/download/{serverName}/{mediaId}")
     @Serializable
     public class Url(
         /**

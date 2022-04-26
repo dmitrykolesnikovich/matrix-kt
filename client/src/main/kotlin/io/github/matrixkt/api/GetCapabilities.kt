@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
@@ -12,11 +12,11 @@ import kotlinx.serialization.json.JsonObject
  */
 public class GetCapabilities(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetCapabilities.Url, Any?, GetCapabilities.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetCapabilities.Url, Nothing, GetCapabilities.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/capabilities")
+    @Resource("_matrix/client/r0/capabilities")
     @Serializable
     public class Url
 

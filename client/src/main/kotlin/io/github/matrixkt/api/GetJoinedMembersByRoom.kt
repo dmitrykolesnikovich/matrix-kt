@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,11 +14,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetJoinedMembersByRoom(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetJoinedMembersByRoom.Url, Any?, GetJoinedMembersByRoom.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetJoinedMembersByRoom.Url, Nothing, GetJoinedMembersByRoom.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/rooms/{roomId}/joined_members")
+    @Resource("_matrix/client/r0/rooms/{roomId}/joined_members")
     @Serializable
     public class Url(
         /**

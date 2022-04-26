@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.Presence
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,7 +20,7 @@ public class SetPresence(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SetPresence.Url, SetPresence.Body, Unit> {
-    @Resource("/_matrix/client/r0/presence/{userId}/status")
+    @Resource("_matrix/client/r0/presence/{userId}/status")
     @Serializable
     public class Url(
         /**

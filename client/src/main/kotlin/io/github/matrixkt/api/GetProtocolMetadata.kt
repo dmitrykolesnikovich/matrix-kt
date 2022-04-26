@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.thirdparty.Protocol
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetProtocolMetadata(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetProtocolMetadata.Url, Any?, Protocol> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetProtocolMetadata.Url, Nothing, Protocol> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/thirdparty/protocol/{protocol}")
+    @Resource("_matrix/client/r0/thirdparty/protocol/{protocol}")
     @Serializable
     public class Url(
         /**

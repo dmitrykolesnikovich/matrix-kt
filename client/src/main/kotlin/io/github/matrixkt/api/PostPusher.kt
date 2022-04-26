@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,7 +18,7 @@ public class PostPusher(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Post, PostPusher.Url, PostPusher.Body, Unit> {
-    @Resource("/_matrix/client/r0/pushers/set")
+    @Resource("_matrix/client/r0/pushers/set")
     @Serializable
     public class Url
 

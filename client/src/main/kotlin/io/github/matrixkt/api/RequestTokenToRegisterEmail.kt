@@ -4,7 +4,7 @@ import io.github.matrixkt.models.EmailValidationRequest
 import io.github.matrixkt.models.TokenValidationResponse
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,7 +17,7 @@ public class RequestTokenToRegisterEmail(
     public override val url: Url,
     public override val body: EmailValidationRequest
 ) : MatrixRpc<RpcMethod.Post, RequestTokenToRegisterEmail.Url, EmailValidationRequest, TokenValidationResponse> {
-    @Resource("/_matrix/client/r0/register/email/requestToken")
+    @Resource("_matrix/client/r0/register/email/requestToken")
     @Serializable
     public class Url
 }

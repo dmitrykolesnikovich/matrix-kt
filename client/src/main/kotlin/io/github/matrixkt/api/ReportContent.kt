@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,9 +11,9 @@ import kotlinx.serialization.Serializable
  */
 public class ReportContent(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, ReportContent.Url, ReportContent.Body?, Unit> {
-    @Resource("/_matrix/client/r0/rooms/{roomId}/report/{eventId}")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, ReportContent.Url, ReportContent.Body, Unit> {
+    @Resource("_matrix/client/r0/rooms/{roomId}/report/{eventId}")
     @Serializable
     public class Url(
         /**
@@ -31,11 +31,11 @@ public class ReportContent(
         /**
          * The reason the content is being reported. May be blank.
          */
-        public val reason: String,
+        public val reason: String? = null,
         /**
          * The score to rate this content as where -100 is most offensive
          * and 0 is inoffensive.
          */
-        public val score: Long
+        public val score: Long? = null
     )
 }

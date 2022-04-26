@@ -13,9 +13,7 @@ plugins {
 
 val serialVersion: String by rootProject.extra
 val jnaVersion: String by rootProject.extra
-val olmVersion = "3.2.2"
-
-val useSingleTarget: Boolean by extra(System.getProperty("idea.active") == "true")
+val olmVersion = "3.2.4"
 
 val downloadsDir = buildDir.resolve("downloads")
 val olmZip = downloadsDir.resolve("olm-$olmVersion.zip")
@@ -40,18 +38,12 @@ if (HostManager.hostIsMingw) {
 
 kotlin {
     jvm()
-    if (useSingleTarget) {
-        if (HostManager.hostIsLinux) linuxX64()
-        if (HostManager.hostIsMac) macosX64()
-        if (HostManager.hostIsMingw) mingwX64()
-    } else {
-        linuxX64()
-        macosX64()
-        mingwX64()
-        iosArm32()
-        iosArm64()
-        iosX64()
-    }
+    linuxX64()
+    macosX64()
+    mingwX64()
+    iosArm32()
+    iosArm64()
+    iosX64()
 
     explicitApi()
 
@@ -72,6 +64,20 @@ kotlin {
                 implementation("net.java.dev.jna:jna:$jnaVersion")
             }
         }
+        val nativeMain by creating {
+            dependsOn(commonMain.get())
+        }
+        val nativeTest by creating {
+            dependsOn(commonTest.get())
+        }
+
+        for (target in targets.withType<KotlinNativeTarget>()) {
+            val main = getByName("${target.name}Main")
+            main.dependsOn(nativeMain)
+
+            val test = getByName("${target.name}Test")
+            test.dependsOn(nativeTest)
+        }
     }
 
     targets.withType<KotlinNativeTarget> {
@@ -85,25 +91,20 @@ kotlin {
                         includeDirs(olmDir.resolve("include"))
                     }
                 }
-                defaultSourceSet {
-                    kotlin.srcDir("src/nativeMain/kotlin")
-                    resources.srcDir("src/nativeMain/resources")
-                }
-                dependencies {
-                }
             }
             "test" {
                 binaries {
                     if (HostManager.hostIsLinux || HostManager.hostIsMac) {
-                        getTest(NativeBuildType.DEBUG).linkerOpts("-L/usr/lib", "-L/usr/local/lib", "-lolm")
+                        getTest(NativeBuildType.DEBUG).linkerOpts(
+                            "-L/usr/lib",
+                            "-L/usr/local/lib",
+                            "-L/usr/local/lib/x86_64-linux-gnu",
+                            "-lolm",
+                        )
                     }
                     if (HostManager.hostIsMingw && olmPath != null) {
                         getTest(NativeBuildType.DEBUG).linkerOpts("-L${olmPath}", "-lolm")
                     }
-                }
-                defaultSourceSet {
-                    kotlin.srcDir("src/nativeTest/kotlin")
-                    resources.srcDir("src/nativeTest/resources")
                 }
             }
         }
@@ -121,14 +122,14 @@ kotlin {
 tasks {
     // Setup search paths for libolm at runtime for tests
     named<Test>("jvmTest") {
-        environment("LD_LIBRARY_PATH", "/usr/local/lib")
+        environment("LD_LIBRARY_PATH", "/usr/local/lib:/usr/local/lib/x86_64-linux-gnu")
         if (HostManager.hostIsMingw && olmPath != null) {
             systemProperty("java.library.path", olmPath)
             systemProperty("jna.library.path", olmPath)
         }
     }
     withType<KotlinNativeHostTest> {
-        environment("LD_LIBRARY_PATH", "/usr/local/lib")
+        environment("LD_LIBRARY_PATH", "/usr/local/lib:/usr/local/lib/x86_64-linux-gnu")
         if (HostManager.hostIsMingw && olmPath != null) {
             environment("Path", olmPath)
         }

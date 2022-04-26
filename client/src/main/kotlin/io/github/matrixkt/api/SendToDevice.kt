@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
@@ -14,7 +14,7 @@ public class SendToDevice(
     public override val url: Url,
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SendToDevice.Url, SendToDevice.Body, Unit> {
-    @Resource("/_matrix/client/r0/sendToDevice/{eventType}/{txnId}")
+    @Resource("_matrix/client/r0/sendToDevice/{eventType}/{txnId}")
     @Serializable
     public class Url(
         /**
@@ -36,6 +36,6 @@ public class SendToDevice(
          * device ID to message body. The device ID may also be `*`,
          * meaning all known devices for the user.
          */
-        public val messages: Map<String, Map<String, JsonObject>>? = null
+        public val messages: Map<String, Map<String, JsonObject>>
     )
 }

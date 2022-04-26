@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -31,10 +31,10 @@ import kotlinx.serialization.json.JsonObject
  */
 public class SetRoomStateWithKey(
     public override val url: Url,
-    public override val body: JsonObject? = null
-) : MatrixRpc.WithAuth<RpcMethod.Put, SetRoomStateWithKey.Url, JsonObject?,
+    public override val body: JsonObject
+) : MatrixRpc.WithAuth<RpcMethod.Put, SetRoomStateWithKey.Url, JsonObject,
         SetRoomStateWithKey.Response> {
-    @Resource("/_matrix/client/r0/rooms/{roomId}/state/{eventType}/{stateKey}")
+    @Resource("_matrix/client/r0/rooms/{roomId}/state/{eventType}/{stateKey}")
     @Serializable
     public class Url(
         /**

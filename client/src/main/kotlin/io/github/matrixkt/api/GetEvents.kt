@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.events.MatrixEvent
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,11 +19,11 @@ import kotlinx.serialization.Serializable
 @Deprecated("This endpoint has been deprecated.")
 public class GetEvents(
     public override val url: Url
-) : MatrixRpc.WithAuth<RpcMethod.Get, GetEvents.Url, Any?, GetEvents.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc.WithAuth<RpcMethod.Get, GetEvents.Url, Nothing, GetEvents.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/events")
+    @Resource("_matrix/client/r0/events")
     @Serializable
     public class Url(
         /**

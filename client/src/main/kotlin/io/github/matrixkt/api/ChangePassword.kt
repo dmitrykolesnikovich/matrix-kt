@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.AuthenticationData
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -24,9 +24,9 @@ import kotlinx.serialization.Serializable
  */
 public class ChangePassword(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, ChangePassword.Url, ChangePassword.Body?, Unit> {
-    @Resource("/_matrix/client/r0/account/password")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, ChangePassword.Url, ChangePassword.Body, Unit> {
+    @Resource("_matrix/client/r0/account/password")
     @Serializable
     public class Url
 

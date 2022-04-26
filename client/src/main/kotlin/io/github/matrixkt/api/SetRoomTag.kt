@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.events.contents.TagContent
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,7 +16,7 @@ public class SetRoomTag(
      */
     public override val body: TagContent.Tag
 ) : MatrixRpc.WithAuth<RpcMethod.Put, SetRoomTag.Url, TagContent.Tag, Unit> {
-    @Resource("/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags/{tag}")
+    @Resource("_matrix/client/r0/user/{userId}/rooms/{roomId}/tags/{tag}")
     @Serializable
     public class Url(
         /**

@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,7 +16,7 @@ public class UpgradeRoom(
      */
     public override val body: Body
 ) : MatrixRpc.WithAuth<RpcMethod.Post, UpgradeRoom.Url, UpgradeRoom.Body, UpgradeRoom.Response> {
-    @Resource("/_matrix/client/r0/rooms/{roomId}/upgrade")
+    @Resource("_matrix/client/r0/rooms/{roomId}/upgrade")
     @Serializable
     public class Url(
         /**

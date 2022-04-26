@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,7 +16,7 @@ public class UploadContent(
      */
     public override val body: ByteArray
 ) : MatrixRpc.WithAuth<RpcMethod.Post, UploadContent.Url, ByteArray, UploadContent.Response> {
-    @Resource("/_matrix/media/r0/upload")
+    @Resource("_matrix/media/r0/upload")
     @Serializable
     public class Url(
         /**

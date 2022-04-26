@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  */
 public class GetLoginFlows(
     public override val url: Url
-) : MatrixRpc<RpcMethod.Get, GetLoginFlows.Url, Any?, GetLoginFlows.Response> {
-    public override val body: Any?
-        get() = null
+) : MatrixRpc<RpcMethod.Get, GetLoginFlows.Url, Nothing, GetLoginFlows.Response> {
+    public override val body: Nothing
+        get() = TODO()
 
-    @Resource("/_matrix/client/r0/login")
+    @Resource("_matrix/client/r0/login")
     @Serializable
     public class Url
 

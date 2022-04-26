@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,15 +12,18 @@ import kotlinx.serialization.Serializable
  *
  * This cannot be undone.
  *
- * Users may redact their own events, and any user with a power level
- * greater than or equal to the ``redact`` power level of the room may
- * redact events there.
+ * Any user with a power level greater than or equal to the `m.room.redaction`
+ * event power level may send redaction events in the room. If the user's power
+ * level greater is also greater than or equal to the `redact` power level
+ * of the room, the user may redact events sent by other users.
+ *
+ * Server administrators may redact events sent by users on their server.
  */
 public class RedactEvent(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Put, RedactEvent.Url, RedactEvent.Body?, RedactEvent.Response> {
-    @Resource("/_matrix/client/r0/rooms/{roomId}/redact/{eventId}/{txnId}")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Put, RedactEvent.Url, RedactEvent.Body, RedactEvent.Response> {
+    @Resource("_matrix/client/r0/rooms/{roomId}/redact/{eventId}/{txnId}")
     @Serializable
     public class Url(
         /**

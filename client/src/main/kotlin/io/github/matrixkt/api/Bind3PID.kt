@@ -2,7 +2,7 @@ package io.github.matrixkt.api
 
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,9 +17,9 @@ import kotlinx.serialization.Serializable
  */
 public class Bind3PID(
     public override val url: Url,
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, Bind3PID.Url, Bind3PID.Body?, Unit> {
-    @Resource("/_matrix/client/r0/account/3pid/bind")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, Bind3PID.Url, Bind3PID.Body, Unit> {
+    @Resource("_matrix/client/r0/account/3pid/bind")
     @Serializable
     public class Url
 

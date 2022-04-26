@@ -1,50 +1,57 @@
 package io.github.matrixkt.models.events.contents.key.verification
 
-import io.github.matrixkt.utils.DiscriminatorChanger
-import kotlinx.serialization.*
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonClassDiscriminator
 
 /**
  * Accepts a previously sent `m.key.verification.start` message.
- * Typically sent as a [to-device](https://matrix.org/docs/spec/client_server/r0.6.0#to-device) event.
  */
-@SerialName("m.key.verification.accept")
-@Serializable(AcceptContent.TheSerializer::class)
-public abstract class AcceptContent {
-    /**
-     * An opaque identifier for the verification process. Must be the same as the one used for the m.key.verification.start message.
-     */
-    @SerialName("transaction_id")
-    public abstract val transactionId: String
-
-    // /**
-    //  * The verification method to use.
-    //  */
-    // abstract val method: String
-
-    @SerialName("m.sas.v1")
+public interface AcceptContent {
+    @OptIn(ExperimentalSerializationApi::class)
+    @SerialName("m.key.verification.accept")
+    @JsonClassDiscriminator("method")
     @Serializable
-    public data class SasV1(
+    public abstract class ToDevice : AcceptContent {
+        /**
+         * An opaque identifier for the verification process.
+         * Must be the same as the one used for the `m.key.verification.start` message.
+         */
         @SerialName("transaction_id")
-        override val transactionId: String,
+        public abstract val transactionId: String
+    }
 
+    @OptIn(ExperimentalSerializationApi::class)
+    @SerialName("m.key.verification.start")
+    @JsonClassDiscriminator("method")
+    @Serializable
+    public abstract class InRoom : AcceptContent {
+        /**
+         * Indicates the `m.key.verification.request` that this message is related to.
+         * Note that for encrypted messages, this property should be in the unencrypted portion of the event.
+         */
+        @SerialName("m.relates_to")
+        public abstract val relatesTo: VerificationRelatesTo
+    }
+
+    public sealed interface SasV1 : AcceptContent {
         /**
          * The key agreement protocol the device is choosing to use, out of the options in the `m.key.verification.start` message.
          */
         @SerialName("key_agreement_protocol")
-        val keyAgreementProtocol: String,
+        public val keyAgreementProtocol: String
 
         /**
          * The hash method the device is choosing to use, out of the options in the `m.key.verification.start` message.
          */
-        val hash: String,
+        public val hash: String
 
         /**
          * The message authentication code the device is choosing to use, out of the options in the `m.key.verification.start` message.
          */
         @SerialName("message_authentication_code")
-        val messageAuthenticationCode: String,
+        public val messageAuthenticationCode: String
 
         /**
          * The SAS methods both devices involved in the verification process understand.
@@ -52,27 +59,52 @@ public abstract class AcceptContent {
          * One of: ["decimal", "emoji"]
          */
         @SerialName("short_authentication_string")
-        val shortAuthenticationString: List<String>,
+        public val shortAuthenticationString: List<String>
 
         /**
          * The hash (encoded as unpadded base64) of the concatenation of the device's ephemeral public key (encoded as unpadded base64)
          * and the canonical JSON representation of the `m.key.verification.start` message.
          */
-        val commitment: String
-    ) : AcceptContent()
+        public val commitment: String
 
-    @OptIn(ExperimentalSerializationApi::class)
-    @Serializer(forClass = AcceptContent::class)
-    public object TheSerializer : KSerializer<AcceptContent> {
-        private val firstDelegate = PolymorphicSerializer(AcceptContent::class)
-        private val secondDelegate = DiscriminatorChanger(firstDelegate, "method")
+        @SerialName("m.sas.v1")
+        @Serializable
+        public data class ToDevice(
+            @SerialName("transaction_id")
+            override val transactionId: String,
 
-        override fun deserialize(decoder: Decoder): AcceptContent {
-            return decoder.decodeSerializableValue(secondDelegate)
-        }
+            @SerialName("key_agreement_protocol")
+            override val keyAgreementProtocol: String,
 
-        override fun serialize(encoder: Encoder, value: AcceptContent) {
-            encoder.encodeSerializableValue(secondDelegate, value)
-        }
+            override val hash: String,
+
+            @SerialName("message_authentication_code")
+            override val messageAuthenticationCode: String,
+
+            @SerialName("short_authentication_string")
+            override val shortAuthenticationString: List<String>,
+
+            override val commitment: String
+        ) : SasV1, AcceptContent.ToDevice()
+
+        @SerialName("m.sas.v1")
+        @Serializable
+        public data class InRoom(
+            @SerialName("m.relates_to")
+            override val relatesTo: VerificationRelatesTo,
+
+            @SerialName("key_agreement_protocol")
+            override val keyAgreementProtocol: String,
+
+            override val hash: String,
+
+            @SerialName("message_authentication_code")
+            override val messageAuthenticationCode: String,
+
+            @SerialName("short_authentication_string")
+            override val shortAuthenticationString: List<String>,
+
+            override val commitment: String
+        ) : SasV1, AcceptContent.InRoom()
     }
 }

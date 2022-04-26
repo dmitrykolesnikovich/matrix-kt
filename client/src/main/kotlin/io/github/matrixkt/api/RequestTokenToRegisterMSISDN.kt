@@ -4,7 +4,7 @@ import io.github.matrixkt.models.MSISDNValidationRequest
 import io.github.matrixkt.models.TokenValidationResponse
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,7 +17,7 @@ public class RequestTokenToRegisterMSISDN(
     public override val url: Url,
     public override val body: MSISDNValidationRequest
 ) : MatrixRpc<RpcMethod.Post, RequestTokenToRegisterMSISDN.Url, MSISDNValidationRequest, TokenValidationResponse> {
-    @Resource("/_matrix/client/r0/register/msisdn/requestToken")
+    @Resource("_matrix/client/r0/register/msisdn/requestToken")
     @Serializable
     public class Url
 }

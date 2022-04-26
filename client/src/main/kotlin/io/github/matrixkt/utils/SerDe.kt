@@ -15,14 +15,19 @@ import io.github.matrixkt.models.events.contents.policy.rule.ServerContent
 import io.github.matrixkt.models.events.contents.policy.rule.UserContent
 import io.github.matrixkt.models.events.contents.room.*
 import io.github.matrixkt.models.events.contents.room.message.FeedbackContent
+import io.github.matrixkt.models.events.contents.secret_storage.DefaultKeyContent
+import io.github.matrixkt.models.events.contents.secret_storage.KeyDescription
+import io.github.matrixkt.models.events.contents.secret_storage.Passphrase
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import io.github.matrixkt.models.events.contents.secret.RequestContent as SecretRequestContent
+import io.github.matrixkt.models.events.contents.secret.SendContent as SecretSendContent
 
-public val MatrixSerialModule: SerializersModule = SerializersModule {
+public val EventSerialModule: SerializersModule = SerializersModule {
     contextual(AliasesContent.serializer())
     contextual(CanonicalAliasContent.serializer())
     contextual(CreateContent.serializer())
@@ -58,12 +63,20 @@ public val MatrixSerialModule: SerializersModule = SerializersModule {
     contextual(TagContent.serializer())
     contextual(DirectContent.serializer())
     contextual(AcceptedTermsContent.serializer())
-    contextual(RequestContent.serializer())
-    contextual(StartContent.serializer())
-    contextual(CancelContent.serializer())
-    contextual(AcceptContent.serializer())
-    contextual(KeyContent.serializer())
-    contextual(MacContent.serializer())
+    contextual(RequestContent.ToDevice.serializer())
+    contextual(RequestContent.InRoom.serializer())
+    contextual(StartContent.ToDevice.serializer())
+    contextual(StartContent.InRoom.serializer())
+    contextual(DoneContent.ToDevice.serializer())
+    contextual(DoneContent.InRoom.serializer())
+    contextual(CancelContent.ToDevice.serializer())
+    contextual(CancelContent.InRoom.serializer())
+    contextual(AcceptContent.ToDevice.serializer())
+    contextual(AcceptContent.InRoom.serializer())
+    contextual(KeyContent.ToDevice.serializer())
+    contextual(KeyContent.InRoom.serializer())
+    contextual(MacContent.ToDevice.serializer())
+    contextual(MacContent.InRoom.serializer())
     contextual(IdentityServerContent.serializer())
     contextual(IgnoredUserListContent.serializer())
     contextual(PushRulesContent.serializer())
@@ -71,8 +84,11 @@ public val MatrixSerialModule: SerializersModule = SerializersModule {
     contextual(ServerContent.serializer())
     contextual(UserContent.serializer())
     contextual(FeedbackContent.serializer())
+    contextual(DefaultKeyContent.serializer())
+    contextual(SecretRequestContent.serializer())
+    contextual(SecretSendContent.serializer())
 
-    polymorphic(MessageContent::class, MessageContent.serializer()) {
+    polymorphic(MessageContent::class) {
         subclass(MessageContent.Text.serializer())
         subclass(MessageContent.Emote.serializer())
         subclass(MessageContent.Notice.serializer())
@@ -84,24 +100,39 @@ public val MatrixSerialModule: SerializersModule = SerializersModule {
         subclass(MessageContent.ServerNotice.serializer())
     }
 
-    polymorphic(EncryptedContent::class, EncryptedContent.serializer()) {
+    polymorphic(EncryptedContent::class) {
         subclass(EncryptedContent.OlmV1.serializer())
         subclass(EncryptedContent.MegolmV1.serializer())
     }
 
-    polymorphic(StartContent::class, StartContent.serializer()) {
-        subclass(StartContent.SasV1.serializer())
+    polymorphic(StartContent.ToDevice::class) {
+        subclass(StartContent.SasV1.ToDevice.serializer())
+        subclass(StartContent.ReciprocateV1.ToDevice.serializer())
     }
 
-    polymorphic(AcceptContent::class, AcceptContent.serializer()) {
-        subclass(AcceptContent.SasV1.serializer())
+    polymorphic(StartContent.InRoom::class) {
+        subclass(StartContent.SasV1.InRoom.serializer())
+        subclass(StartContent.ReciprocateV1.InRoom.serializer())
     }
 
-    polymorphic(RoomKeyRequestContent::class) {
-        subclass(RoomKeyRequestContent.Request.serializer())
-        subclass(RoomKeyRequestContent.Cancellation.serializer())
+    polymorphic(AcceptContent.ToDevice::class) {
+        subclass(AcceptContent.SasV1.ToDevice.serializer())
     }
 
+    polymorphic(AcceptContent.InRoom::class) {
+        subclass(AcceptContent.SasV1.InRoom.serializer())
+    }
+
+    polymorphic(KeyDescription::class) {
+        subclass(KeyDescription.AesHmacSha2.serializer())
+    }
+
+    polymorphic(Passphrase::class) {
+        subclass(Passphrase.PBKDF2.serializer())
+    }
+}
+
+public val ClientServerSerialModule: SerializersModule = SerializersModule {
     polymorphic(UserIdentifier::class) {
         subclass(UserIdentifier.Matrix.serializer())
         subclass(UserIdentifier.PhoneNumber.serializer())
@@ -155,10 +186,11 @@ public val MatrixSerialModule: SerializersModule = SerializersModule {
         subclass(Login.Body.Password.serializer())
         subclass(Login.Body.Token.serializer())
     }
+}
 
-    // Workaround for https://github.com/Dominaezzz/matrix-kt/issues/2
-    contextual(Login.Body.Password::class, Login.Body.serializer() as KSerializer<Login.Body.Password>)
-    contextual(Login.Body.Token::class, Login.Body.serializer() as KSerializer<Login.Body.Token>)
+public val MatrixSerialModule: SerializersModule = SerializersModule {
+    include(EventSerialModule)
+    include(ClientServerSerialModule)
 }
 
 public val MatrixJson: Json = Json {
@@ -168,5 +200,4 @@ public val MatrixJson: Json = Json {
     encodeDefaults = false
     isLenient = true
     ignoreUnknownKeys = true
-    classDiscriminator = "type"
 }

@@ -3,7 +3,7 @@ package io.github.matrixkt.api
 import io.github.matrixkt.models.OneTimeKeySerializer
 import io.github.matrixkt.utils.MatrixRpc
 import io.github.matrixkt.utils.RpcMethod
-import io.github.matrixkt.utils.resource.Resource
+import io.ktor.resources.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -16,9 +16,9 @@ public class ClaimKeys(
     /**
      * Query defining the keys to be claimed
      */
-    public override val body: Body? = null
-) : MatrixRpc.WithAuth<RpcMethod.Post, ClaimKeys.Url, ClaimKeys.Body?, ClaimKeys.Response> {
-    @Resource("/_matrix/client/r0/keys/claim")
+    public override val body: Body
+) : MatrixRpc.WithAuth<RpcMethod.Post, ClaimKeys.Url, ClaimKeys.Body, ClaimKeys.Response> {
+    @Resource("_matrix/client/r0/keys/claim")
     @Serializable
     public class Url
 
@@ -46,7 +46,7 @@ public class ClaimKeys(
          *
          * If the homeserver could be reached, but the user or device
          * was unknown, no failure is recorded. Instead, the corresponding
-         * user or device is missing from the ``one_time_keys`` result.
+         * user or device is missing from the [oneTimeKeys] result.
          */
         public val failures: Map<String, JsonObject> = emptyMap(),
         /**
